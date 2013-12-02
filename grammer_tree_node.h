@@ -11,6 +11,7 @@ public:
 
 private:
 	list<GrammerTreeNode> childrens_;
+	GrammerTreeNodeType type_;
 };
 
 #endif // GRAMMER_TREE_NODE_H 
