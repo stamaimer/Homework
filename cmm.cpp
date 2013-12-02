@@ -17,7 +17,7 @@ int main(int argc, char* argv[])//portable
 
 	interpreter.Print();
 	
-	system("pause");
+	//system("pause");
 
 	return 0;
 }
