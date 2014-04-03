@@ -24,18 +24,26 @@ def str2bin(str2convert):
 
 	return ''.join([bin(ord(char))[2:].zfill(8) for char in str2convert])
 
-def pad(str):
+def pad(str2hash):
 
-	size = 896 - len(str) % 1024
+	size = 896 - len(str2hash) % 1024
 
 	if not size:
 
-		size = 1920 - len(str) % 1024
+		size = 1920 - len(str2hash) % 1024
+
+	return ''.join([str2hash, '1', ''.join(['0' for i in range(size - 1)])])
 
 
+def sha512(str2hash):
 
-def sha512(str):
-	print str2bin(str)
+	str2hash = str2bin(str2hash)
+
+	print 'str2bin\n', str2hash
+
+	str2hash = pad(str2hash) 
+
+	print 'pad\n', str2hash
 
 if argc != len(sys.argv):
 
