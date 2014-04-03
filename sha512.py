@@ -12,7 +12,7 @@ def init():
 			   0x510e527fade682d1, 0x9b05688c2b3e6c1f, 
 			   0x1f83d9abfb41bd6b, 0x5be0cd19137e2179,
 			  ]
-			  
+
 	kbuffer = [
 			   0x428a2f98d728ae22, 0x7137449123ef65cd,
         	   0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
@@ -56,6 +56,23 @@ def init():
         	   0x5fcb6fab3ad6faec, 0x6c44198c4a475817, 
         	  ] 
 
+def ror(str2ror, ):
+	
+	tmp = [None for _ in range(len(str2ror))]
+
+	[tmp[()]]
+
+def gen(str2gen):
+
+	wbuffer = [None for _ in range(80)]
+
+	for i in range(16):
+
+		wbuffer[i] = str2gen[64*i:64*(i+1):1]
+
+	for i in range(64):
+
+
 def update():
 	pass
 
@@ -73,7 +90,7 @@ def pad(str2pad):
 
 		size = 1920 - len(str2pad) % 1024
 
-	return ''.join([str2pad, '1', ''.join(['0' for i in range(size - 1)]), bin(len(srcstr))[2:].zfill(128)])
+	return ''.join([str2pad, '1', ''.join(['0' for _ in range(size - 1)]), bin(len(srcstr))[2:].zfill(128)])
 
 def sha512(str2hash):
 
@@ -86,6 +103,8 @@ def sha512(str2hash):
 	print 'pad\n', str2hash
 
 	print len(str2hash) % 1024
+
+	gen(str2hash)
 
 if argc != len(sys.argv):
 
