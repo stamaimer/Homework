@@ -104,7 +104,7 @@ def ror(str2ror, step):
 
 def shr(str2shr, step):
 
-	return bin(int(str2shr, 2) << step)
+	return bin(int(str2shr, 2) << step)[2:].zfill(64)
 
 def gen(str2gen):
 
@@ -116,6 +116,7 @@ def gen(str2gen):
 
 	for i in range(64):
 
+		
 
 def update():
 	pass
