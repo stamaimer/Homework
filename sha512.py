@@ -106,6 +106,14 @@ def shr(str2shr, step):
 
 	return bin(int(str2shr, 2) << step)[2:].zfill(64)
 
+def sigma0(var):
+
+	return bin(int(ror(var, 1), 2) + int(ror(var, 8), 2) + int(shr(var, 7), 2))[2:].zfill(64)
+
+def sigma1(var):
+	
+	return bin(int(ror(var, 19), 2) + int(ror(var, 61), 2) + int(shr(var, 6), 2))[2:].zfill(64)
+
 def gen(str2gen):
 
 	wbuffer = [None for _ in range(80)]
@@ -116,7 +124,9 @@ def gen(str2gen):
 
 	for i in range(64):
 
-		
+		wbuffer[i + 16] = bin(int(sigma1(wbuffer[i + 14]), 2) + int(wbuffer[i + 9], 2) + int(sigma0(wbuffer[i + 1]), 2) + int(wbuffer[i], 2))[2:].zfill(64)
+
+	return wbuffer
 
 def update():
 	pass
@@ -149,7 +159,9 @@ def sha512(str2hash):
 
 	print len(str2hash) % 1024
 
-	gen(str2hash)
+	for i in range(len(str2hash) / 1024):
+
+		print gen(str2hash[1024*i:1024*(i+1):1])
 
 if argc != len(sys.argv):
 
