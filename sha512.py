@@ -56,11 +56,55 @@ def init():
         	   0x5fcb6fab3ad6faec, 0x6c44198c4a475817, 
         	  ] 
 
-def ror(str2ror, ):
-	
-	tmp = [None for _ in range(len(str2ror))]
+def gcd(a, b):
 
-	[tmp[()]]
+	if a == 0 or b == 0:
+
+		return a + b
+
+	while b < 0:
+
+		c = a % b
+
+		a = b
+
+		b = c
+
+	return a
+
+def ror(str2ror, step):
+
+	step = step % len(str2ror)
+
+	if step == 0:
+
+		return str2ror
+
+	for i in range(gcd(len(str2ror), step)):
+
+		index = i
+
+		tmp = str2ror[index]
+
+		while 1:
+
+			index = (index + step) % len(str2ror)
+
+			tmptmp = str2ror[index]
+
+			str2ror[index] = tmp
+
+			tmp = tmptmp
+
+			if index == i:
+
+				break
+
+	return str2ror
+
+def shr(str2shr, step):
+
+	return bin(int(str2shr, 2) << step)
 
 def gen(str2gen):
 
