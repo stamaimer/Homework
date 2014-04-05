@@ -74,13 +74,17 @@ def gcd(a, b):
 
 def ror(str2ror, step):
 
-	step = step % len(str2ror)
+	length = len(str2ror)
+
+	step = step % length
 
 	if step == 0:
 
 		return str2ror
 
-	for i in range(gcd(len(str2ror), step)):
+	str2ror = list(str2ror)
+
+	for i in range(gcd(length, step)):
 
 		index = i
 
@@ -88,7 +92,7 @@ def ror(str2ror, step):
 
 		while 1:
 
-			index = (index + step) % len(str2ror)
+			index = (index + step) % length
 
 			tmptmp = str2ror[index]
 
@@ -100,11 +104,23 @@ def ror(str2ror, step):
 
 				break
 
-	return str2ror
+	return ''.join(str2ror)
 
 def shr(str2shr, step):
 
-	return bin(int(str2shr, 2) << step)[2:].zfill(64)
+	length = len(str2shr)#calculate the length of str2shr
+
+	str2shr = list(str2shr)#transform string to list
+
+	for i in range(length - step):#left shift
+
+		str2shr[i] = str2shr[i + step]
+
+	for i in range(step):#pad zero
+
+		str2shr[length - i - 1] = '0'
+
+	return ''.join(str2shr)#transform list to string
 
 def sigma0(var):
 
@@ -126,6 +142,10 @@ def gen(str2gen):
 
 		wbuffer[i + 16] = bin(int(sigma1(wbuffer[i + 14]), 2) + int(wbuffer[i + 9], 2) + int(sigma0(wbuffer[i + 1]), 2) + int(wbuffer[i], 2))[2:].zfill(64)
 
+	for i in range(80):
+
+		print i, wbuffer[i], '\n'
+
 	return wbuffer
 
 def update():
@@ -133,19 +153,19 @@ def update():
 
 def str2bin(str2convert):
 
-	return ''.join([bin(ord(char))[2:].zfill(8) for char in str2convert])
+	return ''.join([bin(ord(char))[2:].zfill(8) for char in str2convert])#get the binary representation of each character
 
 def pad(str2pad):
 
-	srcstr = str2pad
+	length = len(str2pad)
 
-	size = 896 - len(str2pad) % 1024
+	size = 896 - length % 1024
 
 	if not size:
 
-		size = 1920 - len(str2pad) % 1024
+		size = 1920 - length % 1024
 
-	return ''.join([str2pad, '1', ''.join(['0' for _ in range(size - 1)]), bin(len(srcstr))[2:].zfill(128)])
+	return ''.join([str2pad, '1', ''.join(['0' for _ in range(size - 1)]), bin(length)[2:].zfill(128)])
 
 def sha512(str2hash):
 
@@ -157,11 +177,16 @@ def sha512(str2hash):
 
 	print 'pad\n', str2hash
 
-	print len(str2hash) % 1024
+	print len(str2hash) / 1024
 
-	for i in range(len(str2hash) / 1024):
+	# for i in range(len(str2hash) / 1024):
 
-		print gen(str2hash[1024*i:1024*(i+1):1])
+	# 	print "chunk", i
+		
+	# 	gen(str2hash[1024*i:1024*(i+1):1])
+
+	print shr("10101010", 4)
+	print ror("11001100", 2)
 
 if argc != len(sys.argv):
 
