@@ -74,27 +74,31 @@ def ror(str2ror, step):
 
 def shr(str2shr, step):
 
-	length = len(str2shr)#calculate the length of str2shr
+	length = len(str2shr)
 
-	str2shr = list(str2shr)#transform string to list
+	str2shr = list(str2shr)
 
-	for i in range(length - step):#left shift
+	for i in range(length - step):
 
 		str2shr[i] = str2shr[i + step]
 
-	for i in range(step):#pad zero
+	for i in range(step):
 
 		str2shr[length - i - 1] = '0'
 
-	return ''.join(str2shr)#transform list to string
+	return ''.join(str2shr)
 
 def sigma0(var):
 
-	return bin(int(ror(var, 1), 2) + int(ror(var, 8), 2) + int(shr(var, 7), 2))[2:].zfill(64)
+	tmp = bin(int(ror(var, 1), 2) + int(ror(var, 8), 2) + int(shr(var, 7), 2))[2:].zfill(64)
+
+	return tmp[len(tmp)-64:len(tmp)]
 
 def sigma1(var):
 	
-	return bin(int(ror(var, 19), 2) + int(ror(var, 61), 2) + int(shr(var, 6), 2))[2:].zfill(64)
+	tmp = bin(int(ror(var, 19), 2) + int(ror(var, 61), 2) + int(shr(var, 6), 2))[2:].zfill(64)
+
+	return tmp[len(tmp)-64:len(tmp)]
 
 def gen(str2gen):
 
@@ -106,11 +110,13 @@ def gen(str2gen):
 
 	for i in range(64):
 
-		wbuffer[i + 16] = bin(int(sigma1(wbuffer[i + 14]), 2) + int(wbuffer[i + 9], 2) + int(sigma0(wbuffer[i + 1]), 2) + int(wbuffer[i], 2))[2:].zfill(64)
+		tmp = bin(int(sigma1(wbuffer[i + 14]), 2) + int(wbuffer[i + 9], 2) + int(sigma0(wbuffer[i + 1]), 2) + int(wbuffer[i], 2))[2:].zfill(64)
+
+		wbuffer[i + 16] = tmp[len(tmp)-64:len(tmp)]
 
 	for i in range(80):
 
-		print i, wbuffer[i], '\n'
+		print wbuffer[i], '\n'
 
 	return wbuffer
 
@@ -119,7 +125,7 @@ def update():
 
 def str2bin(str2convert):
 
-	return ''.join([bin(ord(char))[2:].zfill(8) for char in str2convert])#get the binary representation of each character
+	return ''.join([bin(ord(char))[2:].zfill(8) for char in str2convert])
 
 def pad(str2pad):
 
@@ -145,14 +151,11 @@ def sha512(str2hash):
 
 	print len(str2hash) / 1024
 
-	# for i in range(len(str2hash) / 1024):
+	for i in range(len(str2hash) / 1024):
 
-	# 	print "chunk", i
+		print "chunk", i
 		
-	# 	gen(str2hash[1024*i:1024*(i+1):1])
-
-	print shr("10101010", 4)
-	print ror("12345", 3)
+		gen(str2hash[1024*i:1024*(i+1):1])
 
 if argc != len(sys.argv):
 
