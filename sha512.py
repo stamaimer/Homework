@@ -56,55 +56,21 @@ def init():
         	   0x5fcb6fab3ad6faec, 0x6c44198c4a475817, 
         	  ] 
 
-def gcd(a, b):
-
-	if a == 0 or b == 0:
-
-		return a + b
-
-	while b < 0:
-
-		c = a % b
-
-		a = b
-
-		b = c
-
-	return a
-
 def ror(str2ror, step):
-
-	length = len(str2ror)
-
-	step = step % length
-
-	if step == 0:
-
-		return str2ror
 
 	str2ror = list(str2ror)
 
-	for i in range(gcd(length, step)):
+	str2ror.reverse()
 
-		index = i
+	partst = str2ror[:step]
 
-		tmp = str2ror[index]
+	partst.reverse()
 
-		while 1:
+	partnd = str2ror[step:]
 
-			index = (index + step) % length
+	partnd.reverse()
 
-			tmptmp = str2ror[index]
-
-			str2ror[index] = tmp
-
-			tmp = tmptmp
-
-			if index == i:
-
-				break
-
-	return ''.join(str2ror)
+	return ''.join(partst + partnd)
 
 def shr(str2shr, step):
 
@@ -186,7 +152,7 @@ def sha512(str2hash):
 	# 	gen(str2hash[1024*i:1024*(i+1):1])
 
 	print shr("10101010", 4)
-	print ror("11001100", 2)
+	print ror("12345", 3)
 
 if argc != len(sys.argv):
 
