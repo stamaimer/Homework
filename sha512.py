@@ -5,6 +5,12 @@ import sys
 
 argc = 3
 
+hbuffer = [None for _ in range(8)]
+
+kbuffer = [None for _ in range(80)]
+
+wbuffer = [None for _ in range(80)]
+
 def init():
 	hbuffer = [
 			   0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 
@@ -90,7 +96,7 @@ def shr(str2shr, step):
 
 def sigma0(var):
 
-	tmp = bin(int(ror(var, 1), 2) + int(ror(var, 8), 2) + int(shr(var, 7), 2))[2:].zfill(64)
+	tmp = bin(int(ror(var,  1), 2) + int(ror(var,  8), 2) + int(shr(var, 7), 2))[2:].zfill(64)
 
 	return tmp[len(tmp)-64:len(tmp)]
 
@@ -102,23 +108,21 @@ def sigma1(var):
 
 def gen(str2gen):
 
-	wbuffer = [None for _ in range(80)]
-
 	for i in range(16):
 
-		wbuffer[i] = str2gen[64*i:64*(i+1):1]
+		wbuffer[i] = str2gen[64*i:64*(i+1)]
 
-	for i in range(64):
+	for i in range(16, 80):
 
-		tmp = bin(int(sigma1(wbuffer[i + 14]), 2) + int(wbuffer[i + 9], 2) + int(sigma0(wbuffer[i + 1]), 2) + int(wbuffer[i], 2))[2:].zfill(64)
+		tmp = bin(
+					int(sigma1(wbuffer[i -  2]), 2) 
+				  + int(wbuffer[i -  7], 2)	
+				  + int(sigma0(wbuffer[i - 15]), 2) 
+				  + int(wbuffer[i - 16], 2)
 
-		wbuffer[i + 16] = tmp[len(tmp)-64:len(tmp)]
+				 )[2:].zfill(64)
 
-	for i in range(80):
-
-		print wbuffer[i], '\n'
-
-	return wbuffer
+		wbuffer[i] = tmp[len(tmp)-64:len(tmp)]
 
 def update():
 	pass
@@ -143,19 +147,21 @@ def sha512(str2hash):
 
 	str2hash = str2bin(str2hash)
 
-	print 'str2bin\n', str2hash
+	# print 'str2bin\n', str2hash
 
 	str2hash = pad(str2hash) 
 
-	print 'pad\n', str2hash
+	# print 'pad\n', str2hash
 
-	print len(str2hash) / 1024
+	if len(str2hash) % 1024 == 0:
 
-	for i in range(len(str2hash) / 1024):
+		length = len(str2hash) / 1024
 
-		print "chunk", i
+		print "there are", length, "pkgs to process"
+
+		for i in range(length):
 		
-		gen(str2hash[1024*i:1024*(i+1):1])
+			gen(str2hash[1024*i:1024*(i+1)])
 
 if argc != len(sys.argv):
 
