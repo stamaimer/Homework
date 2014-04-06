@@ -169,15 +169,9 @@ def sha512(str2hash):
 
 	str2hash = str2bin(str2hash)
 
-	# print 'str2bin\n', str2hash
-
-	str2hash = pad(str2hash) 
-
-	# print 'pad\n', str2hash
+	str2hash = pad(str2hash)
 
 	if len(str2hash) % 1024 == 0:
-
-		# init()
 
 		length = len(str2hash) / 1024
 
@@ -209,7 +203,4 @@ if '-f' == sys.argv[1]:
 
 	file.close()
 
-	exit(0)
-
-			
-	
+	exit(0)	
