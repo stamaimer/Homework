@@ -96,15 +96,33 @@ def shr(str2shr, step):
 
 def sigma0(var):
 
-	tmp = bin(int(ror(var,  1), 2) + int(ror(var,  8), 2) + int(shr(var, 7), 2))[2:].zfill(64)
+	tmp = bin(int(ror(var,  1), 2) + int(ror(var,  8), 2) + int(shr(var,  7), 2))[2:].zfill(64)
 
 	return tmp[len(tmp)-64:len(tmp)]
 
 def sigma1(var):
 	
-	tmp = bin(int(ror(var, 19), 2) + int(ror(var, 61), 2) + int(shr(var, 6), 2))[2:].zfill(64)
+	tmp = bin(int(ror(var, 19), 2) + int(ror(var, 61), 2) + int(shr(var,  6), 2))[2:].zfill(64)
 
 	return tmp[len(tmp)-64:len(tmp)]
+
+def sigma2(var):
+	
+	tmp = bin(int(ror(var, 14), 2) ^ int(ror(var, 18), 2) ^ int(ror(var, 41), 2))[2:].zfill(64)
+
+	return tmp[len(tmp)-64:len(tmp)]
+
+def sigma3(var):
+	
+	tmp = bin(int(ror(var, 28), 2) ^ int(ror(var, 34), 2) ^ int(ror(var, 39), 2))[2:].zfill(64)
+
+	return tmp[len(tmp)-64:len(tmp)]
+
+def chr():
+	pass
+
+def maj():
+	pass
 
 def gen(str2gen):
 
@@ -128,7 +146,10 @@ def process(str2pro):
 	
 	gen(str2pro)
 
-	
+	for i in range(80):
+
+		t0 = hbuffer[7]
+
 
 def str2bin(str2convert):
 
