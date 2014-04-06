@@ -185,7 +185,7 @@ def sha512(str2hash):
 
 if argc != len(sys.argv):
 
-	print("write usage in here...")
+	print "usage: python sha512.py (-s 'str2hash') | (-f path2hash)"
 
 	exit(1)
 
