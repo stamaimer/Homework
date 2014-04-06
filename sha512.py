@@ -7,8 +7,14 @@ argc = 3
 
 wbuffer = [None for _ in range(80)]
 
-hbuffer = [0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 
-	   0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179]
+hbuffer = ["0110101000001001111001100110011111110011101111001100100100001000",
+		   "1011101101100111101011101000010110000100110010101010011100111011",
+		   "0011110001101110111100110111001011111110100101001111100000101011",
+		   "1010010101001111111101010011101001011111000111010011011011110001",
+		   "0101000100001110010100100111111110101101111001101000001011010001",
+		   "1001101100000101011010001000110000101011001111100110110000011111",
+		   "0001111110000011110110011010101111111011010000011011110101101011",
+		   "0101101111100000110011010001100100010011011111100010000101111001"]
 
 kbuffer = [0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc, 
 	   0x3956c25bf348b538, 0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118,
@@ -89,13 +95,13 @@ def sigma3(var):
 
 def chr():
 	
-	tmp = bin((hbuffer[4] and hbuffer[5]) ^ (not hbuffer[4] and hbuffer[6]))[2:].zfill(64)
+	tmp = bin((int(hbuffer[4], 2) and int(hbuffer[5], 2)) ^ (not int(hbuffer[4], 2) and int(hbuffer[6], 2)))[2:].zfill(64)
 
 	return tmp[len(tmp)-64:len(tmp)]
 
 def maj():
 	
-	tmp = bin((hbuffer[0] and hbuffer[1]) ^ (hbuffer[0] and hbuffer[2]) ^ (hbuffer[1] and hbuffer[2]))[2:].zfill(64)
+	tmp = bin((int(hbuffer[0], 2) and int(hbuffer[1], 2)) ^ (int(hbuffer[0], 2) and int(hbuffer[2], 2)) ^ (int(hbuffer[1], 2) and int(hbuffer[2], 2)))[2:].zfill(64)
 
 	return tmp[len(tmp)-64:len(tmp)]
 
@@ -123,9 +129,25 @@ def process(str2pro):
 
 	for i in range(80):
 
-		t0 = int(chr(), 2) + int(sigma2(bin(int(str(hbuffer[4]), 16))[2:].zfill(64)), 2)
+		t0 = int(hbuffer[7], 2) + int(wbuffer[i], 16) + int(chr(), 2) + int(sigma2(hbuffer[4]), 2)
 
-		print bin(t0)[2:].zfill(64)
+		t1 = int(maj(), 2) + int(sigma3(hbuffer[0]), 2)
+
+		hbuffer[7] = hbuffer[6]
+		hbuffer[6] = hbuffer[5]
+		hbuffer[5] = hbuffer[4]
+
+		tmp = bin(int(hbuffer[3], 2) + t0)[2:].zfill(64)
+
+		hbuffer[4] = tmp[len(tmp)-64:len(tmp)]
+
+		hbuffer[3] = hbuffer[2]
+		hbuffer[2] = hbuffer[1]
+		hbuffer[1] = hbuffer[0]
+
+		tmp = bin(t0 + t1)[2:].zfill(64)
+
+		hbuffer[0] = tmp[len(tmp)-64:len(tmp)]
 
 def str2bin(str2convert):
 
@@ -163,7 +185,9 @@ def sha512(str2hash):
 
 		for i in range(length):
 		
-			process(str2hash[1024*i:1024*(i+1)])
+			process(str2hash[1024*i:1024*(i+1)]) 
+
+	print ''.join([hex(int(hbuffer[i], 2))[2:-1] for i in range(8)])
 
 if argc != len(sys.argv):
 
