@@ -124,8 +124,11 @@ def gen(str2gen):
 
 		wbuffer[i] = tmp[len(tmp)-64:len(tmp)]
 
-def update():
-	pass
+def process(str2pro):
+	
+	gen(str2pro)
+
+	
 
 def str2bin(str2convert):
 
@@ -155,13 +158,15 @@ def sha512(str2hash):
 
 	if len(str2hash) % 1024 == 0:
 
+		init()
+
 		length = len(str2hash) / 1024
 
 		print "there are", length, "pkgs to process"
 
 		for i in range(length):
 		
-			gen(str2hash[1024*i:1024*(i+1)])
+			process(str2hash[1024*i:1024*(i+1)])
 
 if argc != len(sys.argv):
 
