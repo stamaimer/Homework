@@ -129,7 +129,7 @@ def process(str2pro):
 
 	for i in range(80):
 
-		t0 = int(hbuffer[7], 2) + int(wbuffer[i], 16) + int(chr(), 2) + int(sigma2(hbuffer[4]), 2) + int(kbuffer[i], 16)
+		t0 = int(hbuffer[7], 2) + int(wbuffer[i], 16) + int(chr(), 2) + int(sigma2(hbuffer[4]), 2) + kbuffer[i]
 
 		t1 = int(maj(), 2) + int(sigma3(hbuffer[0]), 2)
 
